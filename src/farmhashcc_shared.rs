@@ -5,7 +5,6 @@
 // a seeded 32-bit hash function similar to CityHash32.
 
 use platform::*;
-use farmhashna_shared::*;
 
 fn hash32_len_13_to_24(s: &[u8]) -> u32 {
     let len = s.len() as usize;
@@ -145,91 +144,11 @@ pub fn weak_hash_len_32_with_seeds(w: u64, x: u64, y:u64, z:u64, mut a:u64, mut 
 
 // Return a 16-byte hash for s[0] ... s[31], a, and b.  Quick and dirty.
 // Note: original C++ returned a pair<uint64_t, uint64_t>
-pub fn weak_hash_len_32_with_seeds_bytes(s: &[u8], mut a:u64, mut b:u64) -> Uint128 {
+pub fn weak_hash_len_32_with_seeds_bytes(s: &[u8], a:u64, b:u64) -> Uint128 {
     return weak_hash_len_32_with_seeds(fetch64(s),
         fetch64(&s[8..]),
         fetch64(&s[16..]),
         fetch64(&s[24..]),
         a,
         b);
-}
-
-pub fn hash_len_16_no_mul(u: u64, v: u64) -> u64 {
-    return hash128to64(Uint128{first: u, second: v});
-}
-
-// Note: avoid clashing with the same names in farmhashna by adding cc to start
-
-pub fn cc_hash_len_16(u: u64, v: u64, mul: u64) -> u64 {
-    // Murmur-inspired hashing.
-    let mut a = (u ^ v) * mul;
-    a ^= (a >> 47);
-    let mut b = (v ^ a) * mul;
-    b ^= (b >> 47);
-    b *= mul;
-    return b;
-}
-
-pub fn cc_hash_len_0_to_16(s: &[u8]) -> u64 {
-    let len = s.len() as usize;
-    if len >= 8 {
-        let mul = ((len as u64) *2).wrapping_mul(K2);
-        let a = fetch64(&s).wrapping_add(K2);
-        let b = fetch64(&s[len-8..]);
-        let c = rotate64(b, 37).wrapping_mul(mul) + a;
-        let d = (rotate64(a, 25) + b).wrapping_mul(mul);
-        return cc_hash_len_16(c, d, mul)
-    }
-    if len >= 4 {
-        let mul = ((len as u64) *2).wrapping_mul(K2);
-        let a = fetch32(s) as u64;
-        return cc_hash_len_16((len as u64)+(a<<3), fetch32(&s[len-4..]) as u64, mul)
-    }
-    if len > 0 {
-        let a = s[0];
-        let b = s[len>>1];
-        let c = s[len-1];
-        let y = (a as u32) + ((b as u32) << 8);
-        let z = (len as u32) + ((c as u32) << 2);
-        // FIXME: Check if order is right!
-        return shift_mix((y as u64).wrapping_mul(K2)^(z as u64).wrapping_mul(K0)).wrapping_mul(K2);
-    }
-    return K2
-}
-
-// A subroutine for CityHash128().  Returns a decent 128-bit hash for strings
-// of any length representable in signed long.  Based on City and Murmur.
-pub fn city_murmur(mut s: &[u8], seed: Uint128) -> Uint128 {
-    let len = s.len() as usize;
-    let mut a = seed.first;
-    let mut b = seed.second;
-    let mut c: u64 = 0;
-    let mut d: u64 = 0;
-    let mut l = (len as u64) - 16;
-    if l <= 0 { // len <= 16
-        a = shift_mix(a.wrapping_mul(K1)).wrapping_mul(K1);
-        c = b.wrapping_mul(K1) + cc_hash_len_0_to_16(s);
-        if len >= 8 {
-            d = shift_mix(a + fetch64(s))
-        } else {
-            d = shift_mix(a + c)
-        }
-    } else { // len > 16
-        c = hash_len_16_no_mul(fetch64(&s[(len-8)..]).wrapping_mul(K1), a);
-        d = hash_len_16_no_mul(b+(len as u64), c+fetch64(&s[len-16..]));
-        a += d;
-        while l > 0 {
-            a ^= shift_mix(fetch64(s).wrapping_mul(K1)).wrapping_mul(K1);
-            a = a.wrapping_mul(K1);
-            b ^= a;
-            c ^= shift_mix(fetch64(&s[8..]).wrapping_mul(K1)).wrapping_mul(K1);
-            c = c.wrapping_mul(K1);
-            d ^= c;
-            s = &s[16..];
-            l -= 16;
-        }
-    }
-    a = hash_len_16_no_mul(a, c);
-    b = hash_len_16_no_mul(d, b);
-    return Uint128{first: a ^ b, second: hash_len_16_no_mul(b, a)}
 }

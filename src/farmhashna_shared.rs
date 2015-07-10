@@ -6,9 +6,9 @@ pub fn shift_mix(val: u64) -> u64 {
 // Note: the C++ original was overloaded hashLen16()
 pub fn hash_len_16_mul(u: u64, v: u64, mul: u64) -> u64 {
     let mut a = (u ^ v).wrapping_mul(mul);
-    a ^= (a >> 47);
+    a ^= a >> 47;
     let mut b = (v ^ a).wrapping_mul(mul);
-    b ^= (b >> 47);
+    b ^= b >> 47;
     b = b.wrapping_mul(mul);
     return b;
 }

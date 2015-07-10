@@ -86,6 +86,7 @@ pub fn hash128to64(x: Uint128) -> u64 {
 }
 
 
+#[cfg(test)]
 struct NumIn2Out {
     in1: u32,
     in2: u32,
@@ -93,6 +94,7 @@ struct NumIn2Out {
 }
 
 
+#[cfg(test)]
 struct NumInOut {
     in1: u32,
     out: u32
@@ -100,13 +102,13 @@ struct NumInOut {
 
 #[test]
 fn test_mur() {
-    let mut i = mur(12, 1);
+    let i = mur(12, 1);
     assert_eq!(i, 4253658843);
 }
 
 #[test]
 fn test_bswap32() {
-    let mut i = bswap32(12);
+    let i = bswap32(12);
     assert_eq!(i, 201326592);
 }
 #[test]

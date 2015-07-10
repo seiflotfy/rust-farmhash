@@ -1,6 +1,5 @@
 mod platform;
 mod farmhashna;
-mod farmhashcc;
 mod farmhashmk;
 mod farmhashna_shared;
 mod farmhashcc_shared;
