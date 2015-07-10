@@ -6,11 +6,11 @@ pub fn shift_mix(val: u64) -> u64 {
 // Note: the C++ original was overloaded hashLen16()
 pub fn hash_len_16_mul(u: u64, v: u64, mul: u64) -> u64 {
     let mut a = (u ^ v).wrapping_mul(mul);
-	a ^= (a >> 47);
-	let mut b = (v ^ a).wrapping_mul(mul);
-	b ^= (b >> 47);
-	b = b.wrapping_mul(mul);
-	return b;
+    a ^= (a >> 47);
+    let mut b = (v ^ a).wrapping_mul(mul);
+    b ^= (b >> 47);
+    b = b.wrapping_mul(mul);
+    return b;
 }
 
 pub fn hash_len_16(u: u64, v: u64) -> u64{
@@ -68,11 +68,11 @@ pub fn hash_len_33_to_64(s: &[u8]) -> u64 {
     let b = fetch64(&s[8..]);
     let c = fetch64(&s[len-8..]) * mul;
     let d = fetch64(&s[len-16..]) * K2;
-	let y = rotate64(a+b, 43) + rotate64(c, 30) + d;
-	let z = hash_len_16_mul(y, a+rotate64(b+K2, 18)+c, mul);
-	let e = fetch64(&s[16..]) * mul;
-	let f = fetch64(&s[24..]);
-	let g = (y + fetch64(&s[len-32..])) * mul;
-	let h = (z + fetch64(&s[len-24..])) * mul;
+    let y = rotate64(a+b, 43) + rotate64(c, 30) + d;
+    let z = hash_len_16_mul(y, a+rotate64(b+K2, 18)+c, mul);
+    let e = fetch64(&s[16..]) * mul;
+    let f = fetch64(&s[24..]);
+    let g = (y + fetch64(&s[len-32..])) * mul;
+    let h = (z + fetch64(&s[len-24..])) * mul;
     return hash_len_16_mul(rotate64(e+f, 43)+rotate64(g, 30) +h, e+rotate64(f+a, 18)+g, mul);
 }
