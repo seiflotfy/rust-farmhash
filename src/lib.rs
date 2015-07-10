@@ -12,31 +12,33 @@ use farmhashna::na_hash64;
 use farmhashna::na_hash64_with_seed;
 use farmhashna::na_hash64_with_seeds;
 
-fn hash32(s: &[u8]) -> u32 {
+pub fn hash32(s: &[u8]) -> u32 {
     return mk_hash32(s);
 }
 
-fn hash32_with_seed(s: &[u8], seed: u32) -> u32 {
+pub fn hash32_with_seed(s: &[u8], seed: u32) -> u32 {
     return mk_hash32_with_seed(s, seed);
 }
 
-fn hash64(s: &[u8]) -> u64 {
+pub fn hash64(s: &[u8]) -> u64 {
     return na_hash64(s);
 }
 
-fn hash64_with_seed(s: &[u8], seed: u64) -> u64 {
+pub fn hash64_with_seed(s: &[u8], seed: u64) -> u64 {
     return na_hash64_with_seed(s, seed);
 }
 
-fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
+pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
     return na_hash64_with_seeds(s, seed0, seed1);
 }
 
+#[cfg(test)]
 struct StrToHash32<'a> {
     value:    &'a str,
     expected: u32
 }
 
+#[cfg(test)]
 struct StrToHash64<'a> {
     value:    &'a str,
     expected: u64
