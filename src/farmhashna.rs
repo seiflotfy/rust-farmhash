@@ -15,22 +15,20 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
         }
     } else if len <= 64{
         return hash_len_33_to_64(s);
+    } else if len <= 96 {
+        return hash_len_65_to_96(s);
     }
     // For strings over 64 bytes we loop.  Internal state consists of
     // 56 bytes: v, w, x, y, and z.
-
     let mut x = SEED;
-    // This overflows a qint64 which causes a Go compiler error so split it up
-    // y := (seed*k1) + 113
-    let mut y = SEED;
-    y = y.wrapping_mul(K1);
-    y = y.wrapping_add(113);
+    let mut y: u64 = 2480279821605975764; // y := (seed*k1) + 113
     let mut z = shift_mix(y.wrapping_mul(K2).wrapping_add(113)).wrapping_mul(K2);
     // v and w were pair<uint64_t, uint64_t>
     let mut v = Uint128 {first:0, second:0};
     let mut w = Uint128 {first:0, second:0};
 
     x = x.wrapping_mul(K2).wrapping_add(fetch64(s));
+
     // Set end so that after the loop we have 1 to 64 bytes left to process.
     let end = ((len - 1) / 64) * 64;
     let last64 = end + ((len - 1) & 63) - 63;

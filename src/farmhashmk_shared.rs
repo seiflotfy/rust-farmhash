@@ -30,7 +30,7 @@ pub fn mk_hash32_len_0_to_4 (s: &[u8], seed: u32) -> u32 {
     let mut c: u32 = 9;
     for i in 0..len{
         let v = s[i] as u8;
-        b = b.wrapping_mul(C1) + (v as u32);
+        b = b.wrapping_mul(C1).wrapping_add(v as u32);
         c ^= b;
     }
     return fmix(mur(b, mur((len as u32), c)))

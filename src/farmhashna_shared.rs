@@ -20,7 +20,6 @@ pub fn hash_len_16(u: u64, v: u64) -> u64{
 
 pub fn hash_len_0_to_16(s: &[u8]) -> u64 {
     let len = s.len() as usize;
-    println!("{}", len);
     if len >= 8 {
         let mul = K2.wrapping_add(len as u64 *2);
         let a = fetch64(s).wrapping_add(K2);
@@ -60,19 +59,44 @@ pub fn hash_len_17_to_32(s: &[u8]) -> u64 {
 
 
 // Return an 8-byte hash for 33 to 64 bytes.
-
 pub fn hash_len_33_to_64(s: &[u8]) -> u64 {
     let len = s.len() as usize;
-    let mul = K2 + (len as u64);
-    let a = fetch64(&s) * K2;
+    let mul = K2.wrapping_add((len as u64) * 2);
+    let a = fetch64(&s).wrapping_mul(K2);
     let b = fetch64(&s[8..]);
-    let c = fetch64(&s[len-8..]) * mul;
-    let d = fetch64(&s[len-16..]) * K2;
-    let y = rotate64(a+b, 43) + rotate64(c, 30) + d;
-    let z = hash_len_16_mul(y, a+rotate64(b+K2, 18)+c, mul);
-    let e = fetch64(&s[16..]) * mul;
+    let c = fetch64(&s[len-8..]).wrapping_mul(mul);
+    let d = fetch64(&s[len-16..]).wrapping_mul(K2);
+    let y = rotate64(a.wrapping_add(b), 43).wrapping_add(rotate64(c, 30)).wrapping_add(d);
+    let z = hash_len_16_mul(y, a.wrapping_add(rotate64(b.wrapping_add(K2), 18)).wrapping_add(c), mul);
+    let e = fetch64(&s[16..]).wrapping_mul(mul);
     let f = fetch64(&s[24..]);
-    let g = (y + fetch64(&s[len-32..])) * mul;
-    let h = (z + fetch64(&s[len-24..])) * mul;
-    return hash_len_16_mul(rotate64(e+f, 43)+rotate64(g, 30) +h, e+rotate64(f+a, 18)+g, mul);
+    let g = (y.wrapping_add(fetch64(&s[len-32..]))).wrapping_mul(mul);
+    let h = (z.wrapping_add(fetch64(&s[len-24..]))).wrapping_mul(mul);
+    return hash_len_16_mul(rotate64(e.wrapping_add(f), 43).wrapping_add(rotate64(g, 30).wrapping_add(h)),
+        e.wrapping_add(rotate64(f.wrapping_add(a), 18).wrapping_add(g)), mul);
+}
+
+pub fn hash_len_65_to_96(s: &[u8]) -> u64 {
+  let len = s.len() as usize;
+  let mul0 = K2 - 114;
+  let mul1 = K2 - 114 + 2 * len as u64;
+  let h0 = h32(&s, mul0, 0, 0);
+  let h1 = h32(&s[32..], mul1, 0, 0);
+  let h2 = h32(&s[len - 32..], mul1, h0, h1);
+  return (h2.wrapping_mul(9).wrapping_add(h0 >> 17).wrapping_add(h1 >> 21)).wrapping_mul(mul1);
+}
+
+fn h32(s: &[u8], mul: u64, seed0: u64, seed1: u64) -> u64{
+    let len = s.len() as usize;
+
+    let mut a = fetch64(s).wrapping_mul(K1);
+    let mut b = fetch64(&s[8..]);
+    let c = fetch64(&s[len-8..]).wrapping_mul(mul);
+    let d = fetch64(&s[len - 16..]).wrapping_mul(K2);
+
+    let u = rotate64(a.wrapping_add(b), 43).wrapping_add(rotate64(c, 30)).wrapping_add(d).wrapping_add(seed0);
+    let v = a.wrapping_add(rotate64(b.wrapping_add(K2), 18).wrapping_add(c).wrapping_add(seed1));
+    a = shift_mix((u ^ v).wrapping_mul(mul));
+    b = shift_mix((v ^ a).wrapping_mul(mul));
+    return b;
 }
