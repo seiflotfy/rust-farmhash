@@ -1,15 +1,17 @@
 mod platform;
 mod farmhashna;
 mod farmhashmk;
+mod farmhashuo;
+mod farmhashxo;
 mod farmhashna_shared;
 mod farmhashcc_shared;
 mod farmhashmk_shared;
 
 use farmhashmk::mk_hash32;
 use farmhashmk::mk_hash32_with_seed;
-use farmhashna::na_hash64;
-use farmhashna::na_hash64_with_seed;
-use farmhashna::na_hash64_with_seeds;
+use farmhashxo::xo_hash64;
+use farmhashxo::xo_hash64_with_seed;
+use farmhashxo::xo_hash64_with_seeds;
 
 pub fn hash32(s: &[u8]) -> u32 {
     return mk_hash32(s);
@@ -20,15 +22,15 @@ pub fn hash32_with_seed(s: &[u8], seed: u32) -> u32 {
 }
 
 pub fn hash64(s: &[u8]) -> u64 {
-    return na_hash64(s);
+    return xo_hash64(s);
 }
 
 pub fn hash64_with_seed(s: &[u8], seed: u64) -> u64 {
-    return na_hash64_with_seed(s, seed);
+    return xo_hash64_with_seed(s, seed);
 }
 
 pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
-    return na_hash64_with_seeds(s, seed0, seed1);
+    return xo_hash64_with_seeds(s, seed0, seed1);
 }
 
 #[cfg(test)]
@@ -176,15 +178,15 @@ fn test_hash64_17_to_32() {
 fn test_hash64_33_to_64() {
     let str_to_hash64 = vec![
         // Hash32
-        StrToHash64{expected: 0xe8f89ab6df9bdd25, value: "Discard medicine more than two years old."},
-        StrToHash64{expected: 0x786d7e1987023ca9, value: "He who has a shady past knows that nice guys finish last."},
-        StrToHash64{expected: 0xa9961670ce2a46d9, value: "I wouldn't marry him with a ten foot pole."},
-        StrToHash64{expected: 0x5d14f96c18fe3d5e, value: "Free! Free!/A trip/to Mars/for 900/empty jars/Burma Shave"},
-        StrToHash64{expected: 0x2a578b80bb82147c, value: "The days of the digital watch are numbered.  -Tom Stoppard"},
-        StrToHash64{expected: 0xec8848fd3b266c10, value: "His money is twice tainted: 'taint yours and 'taint mine."},
-        StrToHash64{expected: 0xc2f8db8624fefc0e, value: "The major problem is with sendmail.  -Mark Horton"},
-        StrToHash64{expected: 0xbdd69b798d6ba37a, value: "If the enemy is within range, then so are you."},
-        StrToHash64{expected: 0x5a0a6efd52e84e2a, value: "How can you write a big system without C++?  -Paul Glick"}
+        StrToHash64{expected: 0x2d072041b535155d, value: "Discard medicine more than two years old."}, //41
+        StrToHash64{expected: 0x9f9e3cdeb570f926, value: "He who has a shady past knows that nice guys finish last."},
+        StrToHash64{expected: 0x361b79df08615cd6, value: "I wouldn't marry him with a ten foot pole."},
+        StrToHash64{expected: 0xdcfb73d4de1111c6, value: "Free! Free!/A trip/to Mars/for 900/empty jars/Burma Shave"},
+        StrToHash64{expected: 0xd71bdfedb6182a5d, value: "The days of the digital watch are numbered.  -Tom Stoppard"},
+        StrToHash64{expected: 0x3df4b8e109629602, value: "His money is twice tainted: 'taint yours and 'taint mine."},
+        StrToHash64{expected: 0x1da6c1dfec23a597, value: "The major problem is with sendmail.  -Mark Horton"},
+        StrToHash64{expected: 0x1f232f3375914f0a, value: "If the enemy is within range, then so are you."},
+        StrToHash64{expected: 0xa29944470950e8e4, value: "How can you write a big system without C++?  -Paul Glick"}
     ];
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());
@@ -199,15 +201,15 @@ fn test_hash64_33_to_64() {
 fn test_hash64_else() {
     let str_to_hash64 = vec![
         // Hash32
-        StrToHash64{expected: 0x55182f8859eca4ce, value: "For every action there is an equal and opposite government program."},
-        StrToHash64{expected: 0x7e85d7b050ed2967, value: "There is no reason for any individual to have a computer in their home. -Ken Olsen, 1977"},
-        StrToHash64{expected: 0x38aa3175b37f305c, value: "It's a tiny change to the code and not completely disgusting. - Bob Manchek"},
-        StrToHash64{expected: 0xa2b8bf3032021993, value: "Give me a rock, paper and scissors and I will move the world.  CCFestoon"},
-        StrToHash64{expected: 0x1d85702503ac7eb4, value: "It's well we cannot hear the screams/That we create in others' dreams."},
-        StrToHash64{expected: 0xabcdb319fcf2826c, value: "You remind me of a TV show, but that's all right: I watch it anyway."},
-        StrToHash64{expected: 0x5a05644eb66e435e, value: "Even if I could be Shakespeare, I think I should still choose to be Faraday. - A. Huxley"},
-        StrToHash64{expected: 0x98eff6958c5e91a, value: "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
-        StrToHash64{expected: 0x62d929de8f2ca817, value: "Go is a tool for managing Go source code.Usage: go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
+        StrToHash64{expected: 0x8452fbb0c8f98c4f, value: "For every action there is an equal and opposite government program."},
+        StrToHash64{expected: 0x7fee06e367562d44, value: "There is no reason for any individual to have a computer in their home. -Ken Olsen, 1977"},
+        StrToHash64{expected: 0x889b024bab17bf54, value: "It's a tiny change to the code and not completely disgusting. - Bob Manchek"},
+        StrToHash64{expected: 0xb8e2918a4398348d, value: "Give me a rock, paper and scissors and I will move the world.  CCFestoon"},
+        StrToHash64{expected: 0x796229f1faacec7e, value: "It's well we cannot hear the screams/That we create in others' dreams."},
+        StrToHash64{expected: 0x98d2fbd5131a5860, value: "You remind me of a TV show, but that's all right: I watch it anyway."},
+        StrToHash64{expected: 0x4c349a4ff7ac0c89, value: "Even if I could be Shakespeare, I think I should still choose to be Faraday. - A. Huxley"},
+        StrToHash64{expected: 0x98eff6958c5e91a,  value: "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
+        StrToHash64{expected: 0x21609f6764c635ed, value: "Go is a tool for managing Go source code.Usage: go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
     ];
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());

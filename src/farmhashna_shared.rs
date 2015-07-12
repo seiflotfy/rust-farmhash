@@ -17,7 +17,6 @@ pub fn hash_len_16(u: u64, v: u64) -> u64{
     hash128to64(Uint128{first: u, second: v})
 }
 
-
 pub fn hash_len_0_to_16(s: &[u8]) -> u64 {
     let len = s.len() as usize;
     if len >= 8 {
@@ -56,7 +55,6 @@ pub fn hash_len_17_to_32(s: &[u8]) -> u64 {
     return hash_len_16_mul(rotate64(a.wrapping_add(b), 43) + rotate64(c, 30).wrapping_add(d),
         (a.wrapping_add(rotate64(b.wrapping_add(K2), 18))).wrapping_add(c), mul);
 }
-
 
 // Return an 8-byte hash for 33 to 64 bytes.
 pub fn hash_len_33_to_64(s: &[u8]) -> u64 {
