@@ -1,6 +1,6 @@
 # rust-farmhash
 
-Port of Google's Farmhash version 1.0.0 to pure Rust
+Port of Google's Farmhash version 1.1 to pure Rust
 
 For more on Farmhash see https://code.google.com/p/farmhash/
 
