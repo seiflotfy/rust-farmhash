@@ -199,15 +199,15 @@ fn test_hash64_33_to_64() {
 fn test_hash64_else() {
     let str_to_hash64 = vec![
         // Hash32
-        //StrToHash64{expected: 9534960097801374799, value: "For every action there is an equal and opposite government program."},
-        //StrToHash64{expected: 9218313061035027780, value: "There is no reason for any individual to have a computer in their home. -Ken Olsen, 1977"},
-        //StrToHash64{expected: 0xa104da6f2f575514, value: "It's a tiny change to the code and not completely disgusting. - Bob Manchek"},
-        //{expected: 0xa58e3702193e4631, value: "Give me a rock, paper and scissors and I will move the world.  CCFestoon"},
-        //StrToHash64{expected: 0x61751a90ec7d71bf, value: "It's well we cannot hear the screams/That we create in others' dreams."},
-        //StrToHash64{expected: 0x836f5ff0c2a7dfaa, value: "You remind me of a TV show, but that's all right: I watch it anyway."},
-        //StrToHash64{expected: 0x4c349a4ff7ac0c89, value: "Even if I could be Shakespeare, I think I should still choose to be Faraday. - A. Huxley"},
-        //StrToHash64{expected: 0x98eff6958c5e91a, value: "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
-        //StrToHash64{expected: 0x21609f6764c635ed, value: "Go is a tool for managing Go source code.Usage: go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
+        StrToHash64{expected: 0x55182f8859eca4ce, value: "For every action there is an equal and opposite government program."},
+        StrToHash64{expected: 0x7e85d7b050ed2967, value: "There is no reason for any individual to have a computer in their home. -Ken Olsen, 1977"},
+        StrToHash64{expected: 0x38aa3175b37f305c, value: "It's a tiny change to the code and not completely disgusting. - Bob Manchek"},
+        StrToHash64{expected: 0xa2b8bf3032021993, value: "Give me a rock, paper and scissors and I will move the world.  CCFestoon"},
+        StrToHash64{expected: 0x1d85702503ac7eb4, value: "It's well we cannot hear the screams/That we create in others' dreams."},
+        StrToHash64{expected: 0xabcdb319fcf2826c, value: "You remind me of a TV show, but that's all right: I watch it anyway."},
+        StrToHash64{expected: 0x5a05644eb66e435e, value: "Even if I could be Shakespeare, I think I should still choose to be Faraday. - A. Huxley"},
+        StrToHash64{expected: 0x98eff6958c5e91a, value: "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
+        StrToHash64{expected: 0x62d929de8f2ca817, value: "Go is a tool for managing Go source code.Usage: go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
     ];
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());

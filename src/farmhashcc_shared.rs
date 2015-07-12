@@ -44,7 +44,7 @@ fn hash32_len_5_to_12(s: &[u8]) -> u32 {
 }
 
 
-pub fn hash32(mut s: &[u8]) ->u32 {
+pub fn hash32(mut s: &[u8]) -> u32 {
     let len = s.len() as usize;
     if len <= 24 {
         if len <= 12 {
