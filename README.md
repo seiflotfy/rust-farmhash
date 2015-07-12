@@ -10,7 +10,7 @@ before it, use ideas from Austin Appleby's MurmurHash.
 
 ## Example usage
 
-'''
+```rust
 extern crate farmhash;
 
 ...
@@ -20,7 +20,7 @@ let res32 = farmhash::hash32(&value.as_bytes());
 // res32 ==> 430397466
 let res64 = farmhash::hash64(&value.as_bytes());
 // res64 ==> 6381520714923946011
-'''
+```
 
 
 #### Note:
