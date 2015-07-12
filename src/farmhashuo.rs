@@ -51,7 +51,6 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
         x = rotate64(x, 26);
         x = x.wrapping_mul(9);
         y = rotate64(y, 29);
-        //println!{"{} {}", w.second ,z};
         z = z.wrapping_mul(mul);
 
         v.first = rotate64(v.first, 33);

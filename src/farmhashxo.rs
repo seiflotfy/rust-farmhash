@@ -17,7 +17,6 @@ fn xo_h32(s: &[u8], len: usize, mul: u64, seed0: u64, seed1: u64) -> u64 {
 
 // Return an 8-byte hash for 33 to 64 bytes.
 fn xo_hash_len_33_to_64(s: &[u8], len: usize) -> u64 {
-    println!("\n");
     let mul0 = K2.wrapping_sub(30);
     let mul1 = K2.wrapping_sub(30).wrapping_add(2 * len as u64);
     let h0 = xo_h32(s, 32, mul0, 0, 0);

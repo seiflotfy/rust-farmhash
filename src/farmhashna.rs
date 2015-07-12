@@ -64,7 +64,6 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
     let t = z;
     z = x;
     x = t;
-    //println!("{} {}", z, x);
     return hash_len_16_mul(hash_len_16_mul(v.first, w.first, mul).wrapping_add(shift_mix(y).wrapping_mul(K0).wrapping_add(z)),
         hash_len_16_mul(v.second, w.second, mul).wrapping_add(x),
         mul)

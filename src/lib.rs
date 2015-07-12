@@ -58,6 +58,9 @@ fn test_hash32_len_0_to_4() {
     ];
     for s in str_to_hash32 {
         let hash = hash32((&s.value).as_bytes());
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
         assert_eq!(hash, s.expected);
     }
 }
@@ -77,6 +80,9 @@ fn test_hash32_len_5_to_12() {
     ];
     for s in str_to_hash32 {
         let hash = hash32((&s.value).as_bytes());
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
         assert_eq!(hash, s.expected);
     }
 }
@@ -92,6 +98,9 @@ fn test_hash32_len_13_to_24() {
     ];
     for s in str_to_hash32 {
         let hash = hash32((&s.value).as_bytes());
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
         assert_eq!(hash, s.expected);
     }
 }
@@ -101,7 +110,7 @@ fn test_hash32_len_13_to_24() {
 fn test_hash32_else() {
     let str_to_hash32 = vec![
         // Hash32
-        StrToHash32{value: "Go is a tool for managing Go source code.Usage:	go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic.",  expected: 0x9c8f96f3},
+        StrToHash32{expected: 0x9c8f96f3, value: "Go is a tool for managing Go source code.Usage:	go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
         StrToHash32{expected: 0xe273108f, value: "Discard medicine more than two years old."},
         StrToHash32{expected: 0xf585dfc4, value: "He who has a shady past knows that nice guys finish last."},
         StrToHash32{expected: 0x363394d1, value: "I wouldn't marry him with a ten foot pole."},
@@ -124,6 +133,9 @@ fn test_hash32_else() {
     ];
     for s in str_to_hash32 {
         let hash = hash32((&s.value).as_bytes());
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
         assert_eq!(hash, s.expected);
     }
 }
