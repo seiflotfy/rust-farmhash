@@ -8,7 +8,6 @@ authors = ["Seif Lotfy <seiflotfy@gmail.com>"]
 description = "Farmhash is a successor to Cityhash (also from Google). Farmhash, like Cityhash before it, use ideas from Austin Appleby's MurmurHash."
 
 # These URLs point to more information about the repository
-documentation = "..."
 homepage = "http://geekyogre.com"
 repository = "https://github.com/seiflotfy/rust-farmhash"
 
