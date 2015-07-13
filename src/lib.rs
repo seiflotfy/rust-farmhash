@@ -12,6 +12,7 @@ use farmhashmk::mk_hash32_with_seed;
 use farmhashxo::xo_hash64;
 use farmhashxo::xo_hash64_with_seed;
 use farmhashxo::xo_hash64_with_seeds;
+use std::hash::Hasher;
 
 /// Create a new farmhash based u32 for a gives array of bytes.
 ///
@@ -51,6 +52,46 @@ pub fn hash64_with_seed(s: &[u8], seed: u64) -> u64 {
 /// Create a new farmhash based u64 for a gives array of bytes with 2 given seeds.
 pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
     return xo_hash64_with_seeds(s, seed0, seed1);
+}
+
+
+pub struct FarmHasher {
+    bytes: Vec<u8>
+}
+
+impl FarmHasher {
+    /// Creates a new `FarmHasher`.
+    #[inline]
+    pub fn new() -> FarmHasher {
+        let mut h = FarmHasher{bytes: vec![]};
+        h.reset();
+        return h;
+    }
+
+    #[inline]
+    fn reset(&mut self) {
+        self.bytes.clear();
+    }
+
+    #[inline]
+    fn write(&mut self, msg: &[u8]) {
+        for b in msg {
+            self.bytes.push(*b);
+        }
+    }
+
+}
+
+impl Hasher for FarmHasher {
+    #[inline]
+    fn write(&mut self, msg: &[u8]) {
+        self.write(msg)
+    }
+
+    #[inline]
+    fn finish(&self) -> u64 {
+        hash64(&self.bytes[..])
+    }
 }
 
 #[cfg(test)]
@@ -180,11 +221,16 @@ fn test_hash64_0_to_16() {
         StrToHash64{expected: 0x7fbbcd6191d8dce0, value: "fred@example.com"},
         StrToHash64{expected: 0x80d73b843ba57db8, value: "size:  a.out:  bad magic"},
     ];
+    let mut hasher = FarmHasher::new();
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());
         if hash != s.expected {
             println!("{}", s.value);
         }
+        assert_eq!(hash, s.expected);
+        hasher.write((&s.value).as_bytes());
+        let hash = hasher.finish();
+        hasher.reset();
         assert_eq!(hash, s.expected);
     }
 }
@@ -197,11 +243,16 @@ fn test_hash64_17_to_32() {
         StrToHash64{expected: 0x8eb3808d1ccfc779, value: "Nepal premier won't resign."},
         StrToHash64{expected: 0xb944f8a16261e414, value: "C is as portable as Stonehedge!!"}
     ];
+    let mut hasher = FarmHasher::new();
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());
         if hash != s.expected {
             println!("{}", s.value);
         }
+        assert_eq!(hash, s.expected);
+        hasher.write((&s.value).as_bytes());
+        let hash = hasher.finish();
+        hasher.reset();
         assert_eq!(hash, s.expected);
     }
 }
@@ -220,11 +271,16 @@ fn test_hash64_33_to_64() {
         StrToHash64{expected: 0x1f232f3375914f0a, value: "If the enemy is within range, then so are you."},
         StrToHash64{expected: 0xa29944470950e8e4, value: "How can you write a big system without C++?  -Paul Glick"}
     ];
+    let mut hasher = FarmHasher::new();
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());
         if hash != s.expected {
             println!("{}", s.value);
         }
+        assert_eq!(hash, s.expected);
+        hasher.write((&s.value).as_bytes());
+        let hash = hasher.finish();
+        hasher.reset();
         assert_eq!(hash, s.expected);
     }
 }
@@ -243,11 +299,16 @@ fn test_hash64_else() {
         StrToHash64{expected: 0x98eff6958c5e91a,  value: "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule"},
         StrToHash64{expected: 0x21609f6764c635ed, value: "Go is a tool for managing Go source code.Usage: go command [arguments]The commands are:    build       compile packages and dependencies    clean       remove object files    env         print Go environment information    fix         run go tool fix on packages    fmt         run gofmt on package sources    generate    generate Go files by processing source    get         download and install packages and dependencies    install     compile and install packages and dependencies    list        list packages    run         compile and run Go program    test        test packages    tool        run specified go tool    version     print Go version    vet         run go tool vet on packagesUse go help [command] for more information about a command.Additional help topics:    c           calling between Go and C    filetype    file types    gopath      GOPATH environment variable    importpath  import path syntax    packages    description of package lists    testflag    description of testing flags    testfunc    description of testing functionsUse go help [topic] for more information about that topic."},
     ];
+    let mut hasher = FarmHasher::new();
     for s in str_to_hash64 {
         let hash = hash64((&s.value).as_bytes());
         if hash != s.expected {
             println!("{}", s.value);
         }
+        assert_eq!(hash, s.expected);
+        hasher.write((&s.value).as_bytes());
+        let hash = hasher.finish();
+        hasher.reset();
         assert_eq!(hash, s.expected);
     }
 }
