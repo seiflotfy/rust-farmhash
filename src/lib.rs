@@ -69,7 +69,7 @@ impl FarmHasher {
     }
 
     #[inline]
-    fn reset(&mut self) {
+    pub fn reset(&mut self) {
         self.bytes.clear();
     }
 
