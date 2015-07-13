@@ -55,29 +55,20 @@ pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
 }
 
 
-pub struct FarmHasher {
-    bytes: Vec<u8>
-}
+pub struct FarmHasher(u64);
 
-impl FarmHasher {
-    /// Creates a new `FarmHasher`.
+impl Default for FarmHasher {
     #[inline]
-    pub fn new() -> FarmHasher {
-        FarmHasher{bytes: vec![]}
-    }
+    fn default() -> FarmHasher { FarmHasher(0) }
 }
 
 impl Hasher for FarmHasher {
     #[inline]
-    fn write(&mut self, msg: &[u8]) {
-        for b in msg {
-            self.bytes.push(*b);
-        }
-    }
-
+    fn finish(&self) -> u64 { self.0 }
     #[inline]
-    fn finish(&self) -> u64 {
-        hash64(&self.bytes[..])
+    fn write(&mut self, bytes: &[u8]) {
+        let FarmHasher(_) = *self;
+        *self = FarmHasher(hash64(bytes));
     }
 }
 
@@ -215,7 +206,7 @@ fn test_hash64_0_to_16() {
         }
         assert_eq!(hash, s.expected);
 
-        let mut hasher = FarmHasher::new();
+        let mut hasher = FarmHasher::default();
         hasher.write((&s.value).as_bytes());
         let hash = hasher.finish();
         if hash != s.expected {
@@ -240,7 +231,7 @@ fn test_hash64_17_to_32() {
         }
         assert_eq!(hash, s.expected);
 
-        let mut hasher = FarmHasher::new();
+        let mut hasher = FarmHasher::default();
         hasher.write((&s.value).as_bytes());
         let hash = hasher.finish();
         assert_eq!(hash, s.expected);
@@ -268,7 +259,7 @@ fn test_hash64_33_to_64() {
         }
         assert_eq!(hash, s.expected);
 
-        let mut hasher = FarmHasher::new();
+        let mut hasher = FarmHasher::default();
         hasher.write((&s.value).as_bytes());
         let hash = hasher.finish();
         assert_eq!(hash, s.expected);
@@ -297,7 +288,7 @@ fn test_hash64_else() {
         }
         assert_eq!(hash, s.expected);
 
-        let mut hasher = FarmHasher::new();
+        let mut hasher = FarmHasher::default();
         hasher.write((&s.value).as_bytes());
         let hash = hasher.finish();
         assert_eq!(hash, s.expected);
