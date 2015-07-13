@@ -21,7 +21,3 @@ let res32 = farmhash::hash32(&value.as_bytes());
 let res64 = farmhash::hash64(&value.as_bytes());
 // res64 ==> 6381520714923946011
 ```
-
-
-#### Note:
-This has been translated from [gofarmhash](https://github.com/leemcloughlin/gofarmhash) with minimal changes
