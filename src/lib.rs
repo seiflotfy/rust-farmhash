@@ -25,7 +25,7 @@ use farmhashxo::xo_hash64_with_seeds;
 pub fn hash32(s: &[u8]) -> u32 {
     return mk_hash32(s);
 }
-
+/// Create a new farmhash based u32 for a gives array of bytes with a given seed.
 pub fn hash32_with_seed(s: &[u8], seed: u32) -> u32 {
     return mk_hash32_with_seed(s, seed);
 }
@@ -43,10 +43,12 @@ pub fn hash64(s: &[u8]) -> u64 {
     return xo_hash64(s);
 }
 
+/// Create a new farmhash based u64 for a gives array of bytes with a given seed.
 pub fn hash64_with_seed(s: &[u8], seed: u64) -> u64 {
     return xo_hash64_with_seed(s, seed);
 }
 
+/// Create a new farmhash based u64 for a gives array of bytes with 2 given seeds.
 pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
     return xo_hash64_with_seeds(s, seed0, seed1);
 }
