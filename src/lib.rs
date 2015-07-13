@@ -78,6 +78,7 @@ impl FarmHasher {
         for b in msg {
             self.bytes.push(*b);
         }
+        println!("{}", self.bytes.len());
     }
 
 }
@@ -90,7 +91,8 @@ impl Hasher for FarmHasher {
 
     #[inline]
     fn finish(&self) -> u64 {
-        hash64(&self.bytes[..])
+        let hash = hash64(&self.bytes[..]);
+        return hash;
     }
 }
 
@@ -228,9 +230,13 @@ fn test_hash64_0_to_16() {
             println!("{}", s.value);
         }
         assert_eq!(hash, s.expected);
+
         hasher.write((&s.value).as_bytes());
         let hash = hasher.finish();
         hasher.reset();
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
         assert_eq!(hash, s.expected);
     }
 }
