@@ -26,6 +26,8 @@ let res64 = farmhash::hash64(&value.as_bytes());
 
 Tested on /usr/share/dict/web2 on Mac OSX
 
+```
 farmhash: required 0.06485s with 0/235887 collisions
 fnv:      required 0.12042s with 1/235887 collisions
 siphash:  required 0.23546s with 0/235887 collisions
+```
