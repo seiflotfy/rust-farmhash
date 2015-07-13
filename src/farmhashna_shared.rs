@@ -52,7 +52,7 @@ pub fn hash_len_17_to_32(s: &[u8]) -> u64 {
     let b = fetch64(&s[8..]);
     let c = fetch64(&s[len-8..]).wrapping_mul(mul);
     let d = fetch64(&s[len-16..]).wrapping_mul(K2);
-    return hash_len_16_mul(rotate64(a.wrapping_add(b), 43) + rotate64(c, 30).wrapping_add(d),
+    return hash_len_16_mul(rotate64(a.wrapping_add(b), 43).wrapping_add(rotate64(c, 30)).wrapping_add(d),
         (a.wrapping_add(rotate64(b.wrapping_add(K2), 18))).wrapping_add(c), mul);
 }
 
