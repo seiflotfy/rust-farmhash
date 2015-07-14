@@ -35,5 +35,5 @@ siphash:  required 0.23546s with 0/235887 collisions
 ### Note
 
 Since FarmHash is not a streaming hash. It is recommended to use the function hash64 or hash32 directly.
-Using the hasher interface is currently slower due to iterating of the msg given to write and appending everything to a vector for writing.
+Using the hasher interface will give you a different result if you write the same bytearray in chunks before calling finish.
 
