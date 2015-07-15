@@ -32,7 +32,7 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
     let end = &s[((len - 1) / 64) * 64..];
     let last64 = &s[len - 64..];
 
-    while {
+    while s.len() != end.len() {
         let a0 = fetch64(s);
         let a1 = fetch64(&s[8..]);
         let a2 = fetch64(&s[16..]);
@@ -83,8 +83,7 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
 
         mem::swap(&mut u, &mut z);
         s = &s[64..];
-        s.len() != end.len()
-    }{}
+    }
     // Make s point to the last 64 bytes of input.
     s = last64;
     u = u.wrapping_mul(9);

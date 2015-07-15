@@ -55,19 +55,24 @@ pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
 }
 
 
-pub struct FarmHasher(u64);
+pub struct FarmHasher {
+    bytes: Vec<u8>
+}
 
 impl Default for FarmHasher {
     #[inline]
-    fn default() -> FarmHasher { FarmHasher(0) }
+    fn default() -> FarmHasher { FarmHasher{bytes: Vec::with_capacity(20)} }
 }
 
 impl Hasher for FarmHasher {
     #[inline]
-    fn finish(&self) -> u64 { self.0 }
+    fn finish(&self) -> u64 {
+        hash64(&self.bytes[..])
+    }
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
-        let FarmHasher(_) = *self;
-        *self = FarmHasher(hash64(bytes));
+        for b in bytes {
+            self.bytes.push(*b);
+        }
     }
 }
