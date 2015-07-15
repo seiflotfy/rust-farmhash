@@ -24,3 +24,9 @@ keywords = ["farmhash", "hashing"]
 # license identifiers from http://spdx.org/licenses/. Multiple licenses can
 # be separated with a `/`
 license = "MIT"
+
+[dependencies]
+time = "0.1"
+
+[dev-dependencies]
+fnv = "1.0.0"
