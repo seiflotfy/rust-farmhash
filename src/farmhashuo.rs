@@ -2,6 +2,7 @@ use platform::*;
 use farmhashna::*;
 use farmhashna_shared::*;
 use farmhashcc_shared::weak_hash_len_32_with_seeds_bytes;
+use std::mem;
 
 fn uo_h(x: u64, y: u64, mul: u64, r: u64) -> u64 {
     let mut a = (x ^ y).wrapping_mul(mul);
@@ -62,9 +63,7 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
         w.second = w.second.wrapping_add(z);
         z = z.wrapping_mul(9);
 
-        let mut t = u;
-        u = y;
-        y = t;
+        mem::swap(&mut u, &mut y);
 
         z = z.wrapping_add(a0).wrapping_add(a6);
         v.first = v.first.wrapping_add(a2);
@@ -82,9 +81,7 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
         x = x.wrapping_add(w.second);
         w.second = rotate64(w.second, 34);
 
-        t = u;
-        u = z;
-        z = t;
+        mem::swap(&mut u, &mut z);
         s = &s[64..];
         s.len() != end.len()
     }{}
