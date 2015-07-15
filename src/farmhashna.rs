@@ -2,6 +2,7 @@
 use platform::*;
 use farmhashna_shared::*;
 use farmhashcc_shared;
+use std::mem;
 
 // renamed from hash64 to make it clearer elsewhere which is being called
 pub fn na_hash64(mut s: &[u8]) -> u64 {
@@ -37,9 +38,8 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
         z = rotate64(z.wrapping_add(w.first), 33).wrapping_mul(K1);
         v = farmhashcc_shared::weak_hash_len_32_with_seeds_bytes(&s,v.second.wrapping_mul(K1), x.wrapping_add(w.first));
         w = farmhashcc_shared::weak_hash_len_32_with_seeds_bytes(&s[32..],z.wrapping_add(w.second), y.wrapping_add(fetch64(&s[16..])));
-        let t = z;
-        z = x;
-        x = t;
+
+        mem::swap(&mut z, &mut x);
         s = &s[64..];
         s.len() != end.len()
     } {}
@@ -61,9 +61,7 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
         x.wrapping_add(w.first));
     w = farmhashcc_shared::weak_hash_len_32_with_seeds_bytes(&s[32..], z.wrapping_add(w.second),
         y.wrapping_add(fetch64(&s[16..])));
-    let t = z;
-    z = x;
-    x = t;
+    mem::swap(&mut z, &mut x);
     return hash_len_16_mul(hash_len_16_mul(v.first, w.first, mul).wrapping_add(shift_mix(y).wrapping_mul(K0).wrapping_add(z)),
         hash_len_16_mul(v.second, w.second, mul).wrapping_add(x),
         mul)
