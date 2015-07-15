@@ -5,6 +5,7 @@
 // a seeded 32-bit hash function similar to CityHash32.
 
 use platform::*;
+use std::mem;
 
 fn hash32_len_13_to_24(s: &[u8]) -> u32 {
     let len = s.len() as usize;
@@ -106,13 +107,9 @@ pub fn hash32(mut s: &[u8]) -> u32 {
         h = bswap32(h);
         f += a0;
         //PERMUTE3(f, h, g) - swap(a,b);swap(b,c)
-        let mut t = h;
-        h = f;
-        f = t;
+        mem::swap(&mut h, &mut f);
 
-        t = g;
-        g = f;
-        f = t;
+        mem::swap(&mut g, &mut f);
         s = &s[20..];
         iters-=1;
     }
