@@ -9,6 +9,26 @@ struct StrToHash32<'a> {
 }
 
 #[test]
+fn test_cityhash32_len_0_to_4() {
+    let str_to_hash32 = vec![
+        // Hash32
+        StrToHash32{expected: 0xdc56d17a, value: ""},
+        StrToHash32{expected: 0x3c973d4d, value: "a"},
+        StrToHash32{expected: 0x417330fd, value: "ab"},
+        StrToHash32{expected: 0x2f635ec7, value: "abc"},
+        StrToHash32{expected: 0x98b51e95, value: "abcd"},
+        StrToHash32{expected: 0xf2311502, value: "hi"},
+    ];
+    for s in str_to_hash32 {
+        let hash = cityhash32((&s.value).as_bytes());
+        if hash != s.expected {
+            println!("{}", s.value);
+        }
+        assert_eq!(hash, s.expected);
+    }
+}
+
+#[test]
 fn test_hash32_len_0_to_4() {
     let str_to_hash32 = vec![
         // Hash32
