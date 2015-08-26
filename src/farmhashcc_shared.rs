@@ -142,10 +142,10 @@ pub fn weak_hash_len_32_with_seeds(w: u64, x: u64, y:u64, z:u64, mut a:u64, mut 
 // Return a 16-byte hash for s[0] ... s[31], a, and b.  Quick and dirty.
 // Note: original C++ returned a pair<uint64_t, uint64_t>
 pub fn weak_hash_len_32_with_seeds_bytes(s: &[u8], a:u64, b:u64) -> Uint128 {
-    return weak_hash_len_32_with_seeds(fetch64(s),
-        fetch64(&s[8..]),
-        fetch64(&s[16..]),
-        fetch64(&s[24..]),
+    return weak_hash_len_32_with_seeds(fetch64(&s[0..8]),
+        fetch64(&s[8..16]),
+        fetch64(&s[16..24]),
+        fetch64(&s[24..32]),
         a,
         b);
 }
