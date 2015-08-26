@@ -7,14 +7,27 @@
 // Note: I used to call binary.LittleEndian.Uint32 and Uint64 inline but it
 // made comparing the code to the original much trickier
 
+use std::mem;
+use std::ptr;
 
+#[inline]
 pub fn fetch32(p: &[u8]) -> u32 {
-    (p[0] as u32) | (p[1] as u32) << 8 | (p[2] as u32) << 16 | (p[3] as u32) << 24
+    assert!(p.len() >= 4);
+    let mut result = 0u32;
+    unsafe {
+        ptr::copy_nonoverlapping(p.as_ptr(), &mut result as *mut _ as *mut u8, mem::size_of::<u32>());
+    }
+    result.to_le()
 }
 
+#[inline]
 pub fn fetch64(p: &[u8]) -> u64 {
-    (p[0] as u64) | (p[1] as u64) << 8 | (p[2] as u64) << 16 | (p[3] as u64) << 24 |
-    (p[4] as u64) << 32 | (p[5] as u64) << 40 | (p[6] as u64) << 48 | (p[7] as u64) << 56
+    assert!(p.len() >= 8);
+    let mut result = 0u64;
+    unsafe {
+        ptr::copy_nonoverlapping(p.as_ptr(), &mut result as *mut _ as *mut u8, mem::size_of::<u64>());
+    }
+    result.to_le()
 }
 
 // rotate32 is a bitwise rotate
