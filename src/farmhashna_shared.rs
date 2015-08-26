@@ -34,8 +34,8 @@ pub fn hash_len_0_to_16(s: &[u8]) -> u64 {
     }
     if len > 0 {
         let a = s[0];
-        let b = s[len>>1];
-        let c = s[len-1];
+        let b = if len >= 2 { s[1] } else { a }; // s[len / 2]
+        let c = s[len - 1];
         let y = a as u32 + ((b as u32) << 8);
         let z = len as u64 + ((c as u64) << 2);
         return shift_mix((y as u64).wrapping_mul(K2) ^ z.wrapping_mul(K0)).wrapping_mul(K2);
