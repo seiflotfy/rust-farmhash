@@ -28,19 +28,19 @@ pub fn uo_hash64_with_seeds(mut s: &[u8], seed0: u64, seed1: u64) -> u64 {
     x = x.wrapping_mul(K2);
     let mul = K2.wrapping_add(u & 0x82);
 
-    // Set end so that after the loop we have 1 to 64 bytes left to process.
-    let end = &s[((len - 1) / 64) * 64..];
+    // Process the input in blocks of 64 bytes
     let last64 = &s[len - 64..];
 
-    while s.len() != end.len() {
-        let a0 = fetch64(s);
-        let a1 = fetch64(&s[8..]);
-        let a2 = fetch64(&s[16..]);
-        let a3 = fetch64(&s[24..]);
-        let a4 = fetch64(&s[32..]);
-        let a5 = fetch64(&s[40..]);
-        let a6 = fetch64(&s[48..]);
-        let a7 = fetch64(&s[56..]);
+    while s.len() >= 64 {
+        // The `s.len() >= 64` should allow the boundary checks to be elided.
+        let a0 = fetch64(&s[0..8]);
+        let a1 = fetch64(&s[8..16]);
+        let a2 = fetch64(&s[16..24]);
+        let a3 = fetch64(&s[24..32]);
+        let a4 = fetch64(&s[32..40]);
+        let a5 = fetch64(&s[40..48]);
+        let a6 = fetch64(&s[48..56]);
+        let a7 = fetch64(&s[56..64]);
         x = x.wrapping_add(a0).wrapping_add(a1);
         y = y.wrapping_add(a2);
         z = z.wrapping_add(a3);
