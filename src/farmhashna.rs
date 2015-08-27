@@ -27,8 +27,6 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
 
     x = x.wrapping_mul(K2).wrapping_add(fetch64(s));
 
-    // Set end so that after the loop we have 1 to 64 bytes left to process.
-    let end = &s[((len - 1) / 64) * 64..];
     let last64 = &s[len - 64..];
     while {
         x = rotate64(x.wrapping_add(y).wrapping_add(v.first).wrapping_add(fetch64(&s[8..])), 37).wrapping_mul(K1);
@@ -41,7 +39,7 @@ pub fn na_hash64(mut s: &[u8]) -> u64 {
 
         mem::swap(&mut z, &mut x);
         s = &s[64..];
-        s.len() != end.len()
+        s.len() >= 64
     } {}
 
     let mul = K1 + ((z & 0xff) << 1);
