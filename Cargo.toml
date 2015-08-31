@@ -25,8 +25,5 @@ keywords = ["farmhash", "hashing"]
 # be separated with a `/`
 license = "MIT"
 
-[dependencies]
-time = "0.1"
-
 [dev-dependencies]
 fnv = "1.0.0"
