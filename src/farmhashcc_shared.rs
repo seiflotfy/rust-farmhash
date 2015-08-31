@@ -9,7 +9,7 @@ use std::mem;
 
 fn hash32_len_13_to_24(s: &[u8]) -> u32 {
     let len = s.len() as usize;
-    let a = fetch32(&s[-4+(len>>1 as u64)..]);
+    let a = fetch32(&s[(len>>1 as u64) - 4..]);
     let b = fetch32(&s[4..]);
     let c = fetch32(&s[len-8..]);
     let d = fetch32(&s[len>>1..]);
