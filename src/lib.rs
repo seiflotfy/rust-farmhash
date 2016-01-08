@@ -7,6 +7,7 @@ mod farmhashna_shared;
 mod farmhashcc_shared;
 mod farmhashmk_shared;
 
+use farmhashna::na_hash64;
 use farmhashmk::mk_hash32;
 use farmhashmk::mk_hash32_with_seed;
 use farmhashxo::xo_hash64;
@@ -54,6 +55,31 @@ pub fn hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
     xo_hash64_with_seeds(s, seed0, seed1)
 }
 
+/// Create a stable farmhash based u32 for an array of bytes.
+///
+/// # Examples
+///
+/// ```
+/// let value: &str = "hello world";
+/// let res32 = farmhash::fingerprint32(&value.as_bytes());
+/// //res32 ==> 430397466
+/// ```
+pub fn fingerprint32(s: &[u8]) -> u32 {
+    mk_hash32(s)
+}
+
+/// Create a stable farmhash based u64 for an array of bytes.
+///
+/// # Examples
+///
+/// ```
+/// let value: &str = "hello world";
+/// let res64 = farmhash::fingerprint64(&value.as_bytes());
+/// //res64 ==> 6381520714923946011
+/// ```
+pub fn fingerprint64(s: &[u8]) -> u64 {
+    na_hash64(s)
+}
 
 pub struct FarmHasher {
     bytes: Vec<u8>
