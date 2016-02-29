@@ -70,5 +70,5 @@ pub fn na_hash64_with_seed(s: &[u8], seed: u64) -> u64 {
 }
 
 pub fn na_hash64_with_seeds(s: &[u8], seed0: u64, seed1: u64) -> u64 {
-    return hash_len_16(na_hash64(s)-seed0, seed1)
+    return hash_len_16(na_hash64(s).wrapping_sub(seed0), seed1)
 }
