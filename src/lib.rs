@@ -1,5 +1,7 @@
 #![no_std]
 
+extern crate alloc;
+
 mod platform;
 mod farmhashna;
 mod farmhashmk;
@@ -16,6 +18,7 @@ use farmhashxo::xo_hash64;
 use farmhashxo::xo_hash64_with_seed;
 use farmhashxo::xo_hash64_with_seeds;
 use core::hash::Hasher;
+use alloc::vec::Vec;
 
 /// Create a new farmhash based u32 for an array of bytes.  Hash value may vary
 /// with library version and platform.
