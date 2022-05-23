@@ -5,7 +5,7 @@
 // a seeded 32-bit hash function similar to CityHash32.
 
 use platform::*;
-use std::mem;
+use core::mem;
 
 fn hash32_len_13_to_24(s: &[u8]) -> u32 {
     let len = s.len() as usize;

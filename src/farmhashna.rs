@@ -2,7 +2,7 @@
 use platform::*;
 use farmhashna_shared::*;
 use farmhashcc_shared;
-use std::mem;
+use core::mem;
 
 // renamed from hash64 to make it clearer elsewhere which is being called
 pub fn na_hash64(mut s: &[u8]) -> u64 {
