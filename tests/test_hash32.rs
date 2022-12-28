@@ -102,3 +102,11 @@ fn test_hash32_else() {
         assert_eq!(hash, s.expected);
     }
 }
+
+#[test]
+fn test_hash32_no_overflow() {
+    let _ = hash32_with_seed("trial-0".as_bytes(), u32::MAX);
+    let _ = hash32_with_seed("trial-0-key-27".as_bytes(), 1);
+    let _ = hash32_with_seed("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".as_bytes(), u32::MAX);
+    let _ = hash32_with_seed(&vec![0xFF; 8], u32::MAX);
+}
