@@ -39,11 +39,11 @@ pub fn mk_hash32_len_0_to_4 (s: &[u8], seed: u32) -> u32 {
 pub fn mk_hash32_len_5_to_12 (s: &[u8], seed: u32) -> u32 {
     let len = s.len() as usize;
     let mut a = len as u32;
-    let mut b =(len as u32) * 5;
+    let mut b =(len as u32).wrapping_mul(5);
     let mut c: u32 = 9;
-    let d: u32 = b + seed;
-    a += fetch32(&s);
-    b += fetch32(&s[len-4..]);
-    c += fetch32(&s[(len>>1)&4..]);
+    let d: u32 = b.wrapping_add(seed);
+    a = a.wrapping_add(fetch32(&s));
+    b = b.wrapping_add(fetch32(&s[len-4..]));
+    c = c.wrapping_add(fetch32(&s[(len>>1)&4..]));
     return fmix(seed ^ mur(c, mur(b, mur(a, d))))
 }

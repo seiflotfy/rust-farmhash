@@ -20,7 +20,7 @@ pub fn mk_hash32_with_seed(s: &[u8], seed: u32) -> u32 {
         }
     }
     let h = mk_hask32_len_13_to_24(&s[0 .. 24], seed^(len as u32));
-    return mur(farmhashcc_shared::hash32(&s[24..])+seed, h)
+    return mur(farmhashcc_shared::hash32(&s[24..]).wrapping_add(seed), h)
 }
 
 pub fn mk_hash32(mut s: &[u8]) -> u32{
