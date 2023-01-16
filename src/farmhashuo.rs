@@ -2,7 +2,7 @@ use platform::*;
 use farmhashna::*;
 use farmhashna_shared::*;
 use farmhashcc_shared::weak_hash_len_32_with_seeds_bytes;
-use std::mem;
+use core::mem;
 
 fn uo_h(x: u64, y: u64, mul: u64, r: u64) -> u64 {
     let mut a = (x ^ y).wrapping_mul(mul);

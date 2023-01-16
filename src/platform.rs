@@ -7,8 +7,8 @@
 // Note: I used to call binary.LittleEndian.Uint32 and Uint64 inline but it
 // made comparing the code to the original much trickier
 
-use std::mem;
-use std::ptr;
+use core::mem;
+use core::ptr;
 
 #[inline]
 pub fn fetch32(p: &[u8]) -> u32 {
